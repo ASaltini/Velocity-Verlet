@@ -24,12 +24,12 @@ int main(){
 
 	for(unsigned i = 1; i <= maxit; i++){
 		for(size_t j = 0; j < a.size(); j++) {
-			v.at(j) = v.at(j) + 0.5*h*a.at(j);
-			r.at(j) = r.at(j) + h*v.at(j);
+			v.at(j) += 0.5*h*a.at(j);
+			r.at(j) += h*v.at(j);
         }
 		a = compForce(r);
 		for(size_t j = 0; j < a.size(); j++) {
-			v.at(j) = v.at(j) + 0.5*h*a.at(j);
+			v.at(j) += 0.5*h*a.at(j);
 		}
 		writeOut(results,i*h,r,v);
 	}
