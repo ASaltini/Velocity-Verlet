@@ -16,7 +16,7 @@ depend: .depend
 
 .depend: $(SRCS)
 	    $(RM) ./.depend
-	    $(CXX) $(CPPFLAGS) -MM $^>>./.depend;
+	    $(CXX) $(CPPFLAGS) -MM $^ >> ./.depend;
 
 clean:
 	    $(RM) $(OBJS)
