@@ -5,11 +5,15 @@ CPPFLAGS = -O3 -Wall -std=c++14
 LDFLAGS = -O3 -Wall -std=c++14
 LDLIBS =
 
-PNAME = verlet.cpp
-SRCS = $(PNAME)
+MAIN = verlet.cpp
+SRCS = $(MAIN)
 OBJS = $(subst .cpp,.o,$(SRCS))
 
-tool: $(OBJS)
+.PHONY: all clean dist-clean
+
+all: $(subst .cpp,,$(SRCS))
+
+$(subst .cpp,,$(SRCS)): $(OBJS)
 	    $(CXX) $(LDFLAGS) -o $(subst .cpp,,$(SRCS)) $(OBJS) $(LDLIBS)
 
 depend: .depend
