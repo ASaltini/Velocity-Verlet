@@ -1,11 +1,14 @@
 #include <fstream>
 #include <array>
+#include <functional>
 
 using namespace std;
 typedef array<double,3> cartesian;
 
 void writeOut(ofstream&, double, cartesian, cartesian);
-cartesian compForce(cartesian);
+cartesian compForce(cartesian, std::function<double(double)>);
+double harmOsc(double);
+double anharmOsc(double);
 
 int main(){
 	const double h = 0.01d;
@@ -14,7 +17,7 @@ int main(){
 	cartesian r, v, a;
 	r.at(0) = 0; r.at(1) = 0; r.at(2) = 1;
 	v.at(0) = 0; v.at(1) = 0; v.at(2) = 0;
-    a = compForce(r);
+    a = compForce(r,harmOsc);
 
 	ofstream results;
 	results.open("results.csv");
@@ -27,7 +30,7 @@ int main(){
 			v.at(j) += 0.5*h*a.at(j);
 			r.at(j) += h*v.at(j);
         }
-		a = compForce(r);
+		a = compForce(r,harmOsc);
 		for(size_t j = 0; j < a.size(); j++) {
 			v.at(j) += 0.5*h*a.at(j);
 		}
@@ -45,8 +48,11 @@ void writeOut(ofstream& destination, double t, cartesian r, cartesian v){
 		destination << endl;
 }
 
-cartesian compForce(cartesian x){
-    cartesian f;
-	for(size_t j = 0; j < f.size(); j++){ f.at(j) = - x.at(j); }
-    return f;
+cartesian compForce(cartesian x,std::function<double(double)> f){
+    cartesian a;
+	for(size_t j = 0; j < a.size(); j++){ a.at(j) = f(x.at(j)); }
+    return a;
 }
+
+double harmOsc(double x){ return -x; }
+double anharmOsc(double x){ return -x - 0.01*x*x; }
